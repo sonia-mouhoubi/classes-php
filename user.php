@@ -25,14 +25,14 @@ class User {
         $this->login = $login;
         $this->password = $password;
 
-        $req = mysqli_query($this->bdd, "SELECT * FROM utilisateurs WHERE login = '$this->login'");
+        $req = mysqli_query($this->bdd, "SELECT * FROM utilisateurs WHERE login = '$this->login' AND password = '$this->password'");
         $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+        return $res;
     }
 
     public function disconnect() {
         // unset($_SESSION['user'],$_SESSION['login']);
         session_destroy();  
-
     }
 
     public function delete($login) {
@@ -41,15 +41,60 @@ class User {
     }
 
     public function update($login, $password, $email, $firstname, $lastname) {
-        mysqli_query($this->bdd, "UPDATE utilisateurs SET login = '$login', password = '$password', email = '$email', firstname = '$firstname', lastname = '$lastname' WHERE login = '".$this->login."'");
-    var_dump($this->login);
-    var_dump("UPDATE utilisateurs SET login = '$login', password = '$password', email = '$email', firstname = '$firstname', lastname = '$lastname' WHERE login = '".$this->login."'");
+        $session_login = $_SESSION['login'];
+
+        mysqli_query($this->bdd, "UPDATE utilisateurs SET login = '$login', password = '$password', email = '$email', firstname = '$firstname', lastname = '$lastname' WHERE login = '$session_login'");
+
+        var_dump("UPDATE utilisateurs SET login = '$login', password = '$password', email = '$email', firstname = '$firstname', lastname = '$lastname' WHERE login = '$session_login'");
     }
 
     public function isConnected() {
-       
+        if(isset($_SESSION['login'])) {
+            return true;
+        }
+        else {
+            return false;
+        }  
     }
 
+    public function getAllInfos() {
+        $session_login = $_SESSION['login'];
+
+        $req = mysqli_query($this->bdd, "SELECT * FROM utilisateurs WHERE login = '$session_login'");
+        $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+        return $res;   
+    }
+
+    public function getLogin() {
+        $session_login = $_SESSION['login'];
+
+        $req = mysqli_query($this->bdd, "SELECT login FROM utilisateurs WHERE login = '$session_login'");
+        $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+        return $res;   
+    }
+    public function getEmail() {
+        $session_login = $_SESSION['login'];
+
+        $req = mysqli_query($this->bdd, "SELECT email FROM utilisateurs WHERE login = '$session_login'");
+        $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+        return $res;    
+    }
+
+    public function getFirstname() {
+        $session_login = $_SESSION['login'];
+
+        $req = mysqli_query($this->bdd, "SELECT firstname FROM utilisateurs WHERE login = '$session_login'");
+        $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+        return $res;
+    }
+
+    public function getLastname() {
+        $session_login = $_SESSION['login'];
+
+        $req = mysqli_query($this->bdd, "SELECT firstname FROM utilisateurs WHERE login = '$session_login'");
+        $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+        return $res;
+    }
 }
 
 ?>

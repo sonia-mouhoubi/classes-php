@@ -1,21 +1,29 @@
 <?php
 require 'user.php';
 session_start();
+$user = new User();
 
 // Afficher les infos de l'utilisateur connéctée
 $bdd = mysqli_connect("localhost", "root", "", "classes");
     $session_login = $_SESSION['login']; 
 if(isset($_SESSION['login'])) {
     $req = mysqli_query($bdd, "SELECT * FROM utilisateurs WHERE login = '$session_login'");
-    $res = mysqli_fetch_all($req, MYSQLI_ASSOC);
+    $res = mysqli_fetch_All($req, MYSQLI_ASSOC);
 }
 // MODIFIER
 if(isset($_POST['modifier'])) {
- 
-    $_SESSION['objet']->update($_POST['login'], $_POST['password'], $_POST['email'], $_POST['firstname'], $_POST['lastname']);
-    var_dump($_SESSION['objet']);
+    $user->update($_POST['login'], $_POST['password'], $_POST['email'], $_POST['firstname'], $_POST['lastname']);
+
+    // $user->update($_POST['login'], $_POST['password'], $_POST['email'], $_POST['firstname'], $_POST['lastname']);
+    // var_dump($user);
 }
 
+echo $user->isConnected();
+
+$res = $user->getAllInfos();
+
+$res1 = $user->getLogin();
+var_dump($res1);
 ?>
 <!DOCTYPE html>
 <html lang="fr">

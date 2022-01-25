@@ -1,14 +1,21 @@
 <?php
 require 'user.php';
 session_start();
+var_dump($_SESSION);
 
 if(isset($_POST['button'])) {
-    $user = new User();
-    $user->connect($_POST['login'], $_POST['password']); 
-    $_SESSION['login'] = $user->login; 
-    $_SESSION['objet'] = $user; 
-    // header('Location: accueil.php');  
-    var_dump($_SESSION['objet']);
+        $user = new User();
+        $res = $user->connect($_POST['login'], $_POST['password']);
+        var_dump($res);
+        if(!empty($res)) {
+            var_dump($res);
+        // $_SESSION['login'] = $res[0]['login'];
+        $_SESSION['login'] = $user->login; 
+        $_SESSION['objet'] = $user; 
+        echo 'Connexion réussie';
+        header('Location: accueil.php');  
+        
+    }  
 }
 ?>
 <!DOCTYPE html>

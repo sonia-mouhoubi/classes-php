@@ -19,9 +19,9 @@ if(isset($_POST['supprimer'])) {
     $user = new User();
     $user->delete($_SESSION['login']);
     header("Refresh:0");
-
 }
-
+// $_SESSION['objet']->isConnected();
+// var_dump($_SESSION['objet']->isConnected());
 ?>
 <!DOCTYPE html>
 <html lang="fr">
