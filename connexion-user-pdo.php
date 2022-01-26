@@ -1,35 +1,20 @@
-<?php 
+<?php
 require 'user-pdo.php';
 session_start();
+var_dump($_SESSION);
 
-if(isset($_SESSION['login'])) {
-    echo 'Bonjour '.$_SESSION['login'];
+if(isset($_POST['button'])) {
+        $user = new Userpdo();
+        $res = $user->connect($_POST['login'], $_POST['password']);
+        if(!empty($res)) {
+        // $_SESSION['login'] = $res[0]['login'];
+        $_SESSION['login'] = $user->login; 
+
+        if(isset($_SESSION['login'])) {
+            echo 'Bonjour '.$_SESSION['login'];
+        }        
+    }  
 }
-
-// // SE DECONNECTER
-// if(isset($_POST['deconnect'])) {
-//     $user = new Userpdo();
-//     $user->disconnect();
-//     header("Refresh:0");
-// }
-
-
-// // SUPPRIMER
-// if(isset($_POST['supprimer'])) {
-//     $user = new Userpdo();
-//     $user->delete($_SESSION['login']);
-//     // header("Refresh:0");
-// }
-
-$user = new Userpdo();
-$res = $user->getAllInfos();
-var_dump($res);
-
-// $user = new Userpdo();
-// $res = $user->getLogin();
-// var_dump($res);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -47,17 +32,19 @@ var_dump($res);
         <link href="../styles/css/css.css" rel="stylesheet">
     </head>
     <body>
-        <?php require 'header.php'?>
+      <?php require 'header.php'?>
         <main>
             <section>
-                <h1>Accueil</h1>
+                <h1>Formulaire de connexion</h1> 
 
-                <form action="" method="post">
-                    <input type="submit" id="deconnect" name="deconnect" value="Déconnexion">
-                </form> 
+                <form class="form" action="" method="post">
+                    <label for="login">Login</label>
+                    <input type="text" id="login" name="login">
 
-                <form action="" method="post">
-                    <input type="submit" id="supprimer" name="supprimer" value="Supprimer">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password">
+                    
+                    <input type="submit" id="button" name="button">
                 </form>
             </section>
         </main>
@@ -66,3 +53,4 @@ var_dump($res);
         </footer>
     </body>
 </html>
+   
